@@ -14,14 +14,17 @@ local _get_colors = function()
 	end
 
 	-- get special colors
-	special_colors["fg"] = vim.api.nvim_get_hl(0, {name="normal"})["fg"]
-	special_colors["bg"] = vim.api.nvim_get_hl(0, {name="normal"})["bg"]
-	special_colors["cursor"] = vim.api.nvim_get_hl(0, {name="cursor"})
+	local GLOBAL_NAMESPACE = 0
+
+	special_colors["fg"] = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="normal"})["fg"]
+	special_colors["bg"] = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="normal"})["bg"]
+	special_colors["vert_split"] = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="vertsplit"})
+	special_colors["cursor"] = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="cursor"})
 
 	-- TODO: handle 'reverse=true'
 	-- TODO: handle 'fg' and 'bg' keys
 	-- TODO: handle 'Link <hl_name>'
-
+	-- NOTE: I think I might not need to handle any 'cterm*' args or 'guisp'
 
 	print("base colors:")
 	print(vim.inspect(base_colors))
