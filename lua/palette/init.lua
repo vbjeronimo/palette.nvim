@@ -17,6 +17,12 @@ local defaults = {
 			group = "Cursor",
 			attr = "bg"
 		},
+		-- TODO: delete these test configs
+		normalnc = {
+			group = "NormalNc",
+			attr = "bg"
+		},
+		-- TODO END
 	},
 	default_format = "json",
 	default_output_path = "~/palette.json",
@@ -63,6 +69,14 @@ M.export_colorscheme = function()
 
 				local color = string.format("#%6x", reverse_highlight[value.attr])
 				print("color '"..key.."': "..color)
+
+			elseif next(highlight) == nil then
+				print("highlight "..key.." was cleared")
+				local cleared_attr = vim.api.nvim_get_hl(0, {name="Normal"})[value.attr]
+
+				local color = string.format("#%6x", cleared_attr)
+				print("color '"..key.."': "..color)
+
 
 			end
 		end
