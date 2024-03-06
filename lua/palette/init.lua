@@ -30,6 +30,10 @@ local defaults = {
 			group = "NormalNc",
 			attr = "bg"
 		},
+		-- test = {
+		-- 	group = "VertSplit",
+		-- 	attr = "bcg"
+		-- },
 		-- TODO END
 	},
 	default_format = "json",
@@ -66,10 +70,6 @@ M.export_colorscheme = function()
 
 		else
 			print("highlight '"..key.."' does not have attribute '"..value.attr.."'")
-			-- TODO: check for the "reverse" attr
-			-- NOTE: if the attr defined by the user is not on the table, 
-			--			 and there's no "reverse" attr on the selected hl group
-			--			 raise an error
 			if highlight["reverse"] then
 				local reverse_highlight = {
 					fg = highlight["bg"] or vim.api.nvim_get_hl(0, {name="Normal"})["bg"],
@@ -86,6 +86,15 @@ M.export_colorscheme = function()
 				local color = string.format("#%6x", cleared_attr)
 				print("color '"..key.."': "..color)
 
+			else
+				error(
+					"Error: highlight '"..value.group.."' does not have attribute '"..value.attr.."'\n"..
+					value.group..":\n"
+					..vim.inspect(highlight).."\n"..
+					"\n"..
+					"config:".."\n"..
+					key.." = "..vim.inspect(value)
+				)
 
 			end
 		end
