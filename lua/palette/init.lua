@@ -18,6 +18,14 @@ local defaults = {
 			attr = "bg"
 		},
 		-- TODO: delete these test configs
+		pmenukindsel = {
+			group = "PmenuKindSel",
+			attr = "fg"
+		},
+		pmenusel = {
+			group = "PmenuSel",
+			attr = "fg"
+		},
 		normalnc = {
 			group = "NormalNc",
 			attr = "bg"
@@ -46,7 +54,7 @@ M.export_colorscheme = function()
 	end
 
 	for key, value in pairs(M.config.special_colors) do
-		local highlight = vim.api.nvim_get_hl(0, {name=value.group})
+		local highlight = vim.api.nvim_get_hl(0, {name=value.group, link=false})
 
 		print("\n")
 		print(key)
@@ -55,6 +63,7 @@ M.export_colorscheme = function()
 		if highlight[value.attr] then
 			local color = string.format("#%6x", highlight[value.attr])
 			print("color '"..key.."': "..color)
+
 		else
 			print("highlight '"..key.."' does not have attribute '"..value.attr.."'")
 			-- TODO: check for the "reverse" attr
