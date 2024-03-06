@@ -24,7 +24,6 @@ local defaults = {
 
 M.setup = function(opts)
 	M.config = vim.tbl_deep_extend("force", defaults, opts or {})
-	print(vim.inspect(M.config))
 end
 
 M.setup()
