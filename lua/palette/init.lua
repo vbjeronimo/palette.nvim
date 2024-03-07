@@ -57,49 +57,46 @@ M.export_colorscheme = function()
 		base_colors["color"..i] = vim.g["terminal_color_"..i]
 	end
 
-	for key, value in pairs(M.config.special_colors) do
-		local highlight = vim.api.nvim_get_hl(0, {name=value.group, link=false})
+	local GLOBAL_NAMESPACE = 0
+	local normal_highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="Normal"})
 
-		print("\n")
-		print(key)
-		print(vim.inspect(highlight))
+	for key, value in pairs(M.config.special_colors) do
+		local highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name=value.group, link=false})
+		local color = nil
 
 		if highlight[value.attr] then
-			local color = string.format("#%6x", highlight[value.attr])
-			print("color '"..key.."': "..color)
+			color = string.format("#%6x", highlight[value.attr])
+
+		elseif highlight["reverse"] then
+			local reverse_highlight = {
+				fg = highlight["bg"] or normal_highlight["bg"],
+				bg = highlight["fg"] or normal_highlight["fg"],
+			}
+
+			color = string.format("#%6x", reverse_highlight[value.attr])
+
+		elseif next(highlight) == nil then
+			local cleared_attr = normal_highlight[value.attr]
+			color = string.format("#%6x", cleared_attr)
 
 		else
-			print("highlight '"..key.."' does not have attribute '"..value.attr.."'")
-			if highlight["reverse"] then
-				local reverse_highlight = {
-					fg = highlight["bg"] or vim.api.nvim_get_hl(0, {name="Normal"})["bg"],
-					bg = highlight["fg"] or vim.api.nvim_get_hl(0, {name="Normal"})["fg"],
-				}
-
-				local color = string.format("#%6x", reverse_highlight[value.attr])
-				print("color '"..key.."': "..color)
-
-			elseif next(highlight) == nil then
-				print("highlight "..key.." was cleared")
-				local cleared_attr = vim.api.nvim_get_hl(0, {name="Normal"})[value.attr]
-
-				local color = string.format("#%6x", cleared_attr)
-				print("color '"..key.."': "..color)
-
-			else
-				error(
-					"Error: highlight '"..value.group.."' does not have attribute '"..value.attr.."'\n"..
-					value.group..":\n"
-					..vim.inspect(highlight).."\n"..
-					"\n"..
-					"config:".."\n"..
-					key.." = "..vim.inspect(value)
-				)
-
-			end
+			error(
+				"Error: highlight '"..value.group.."' does not have attribute '"..value.attr.."'\n"..
+				value.group..":\n"
+				..vim.inspect(highlight).."\n"..
+				"\n"..
+				"config:".."\n"..
+				key.." = "..vim.inspect(value)
+			)
 		end
-		-- special_colors[key] = color
+
+		special_colors[key] = color
 	end
+
+	return {
+		base_colors,
+		special_colors,
+	}
 end
 
 -- TODO: delete this call
