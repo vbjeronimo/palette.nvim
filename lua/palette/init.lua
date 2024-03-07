@@ -44,8 +44,6 @@ M.setup = function(opts)
   M.config = vim.tbl_deep_extend("force", defaults, opts or {})
 end
 
-M.setup()
-
 M.export_colorscheme = function()
   local base_colors = {}
   local special_colors = {}
@@ -98,8 +96,5 @@ M.export_colorscheme = function()
     special_colors,
   }
 end
-
--- TODO: delete this call
-M.export_colorscheme()
 
 return M
