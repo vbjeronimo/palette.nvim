@@ -28,4 +28,6 @@ M.set_options = function(opts)
   M.options = vim.tbl_deep_extend("force", M.defaults, opts or {})
 end
 
+M.set_options()
+
 return M
