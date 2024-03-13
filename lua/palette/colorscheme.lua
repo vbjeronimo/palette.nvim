@@ -26,10 +26,6 @@ M.get_colors = function(config)
   local error_on_nil = config.error_on_nil
   base_colors = M.get_base_colors(r_start, r_end, error_on_nil)
 
-  for i = r_start, r_end do
-    base_colors["color"..i] = vim.g["terminal_color_"..i]
-  end
-
   local GLOBAL_NAMESPACE = 0
   local normal_highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="Normal"})
 
