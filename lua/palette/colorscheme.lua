@@ -1,11 +1,30 @@
 local M = {}
 
+M.get_base_colors = function(r_start, r_end, error_on_nil)
+  error_on_nil = error_on_nil or false
+  local base_colors = {}
+
+  for i = r_start, r_end do
+    local color = vim.g["terminal_color_"..i]
+
+    if not color and error_on_nil then
+      error("Error: color"..i.." is nil")
+    end
+
+    base_colors["color"..i] = color
+  end
+
+  return base_colors
+end
+
 M.get_colors = function(config)
   local base_colors = {}
   local special_colors = {}
 
   local r_start = config.base_colors.range[1]
   local r_end = config.base_colors.range[2]
+  local error_on_nil = config.error_on_nil
+  base_colors = M.get_base_colors(r_start, r_end, error_on_nil)
 
   for i = r_start, r_end do
     base_colors["color"..i] = vim.g["terminal_color_"..i]

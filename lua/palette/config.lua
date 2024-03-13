@@ -1,6 +1,7 @@
 local M = {}
 
 M.defaults = {
+  error_on_nil = false,
   base_colors = {
     range = {0, 15}
   },
