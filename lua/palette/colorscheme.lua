@@ -62,21 +62,4 @@ M.get_special_colors = function(color_defs)
   return special_colors
 end
 
-M.get_colors = function(config)
-  local base_colors = {}
-  local special_colors = {}
-
-  local r_start = config.base_colors.range[1]
-  local r_end = config.base_colors.range[2]
-  local error_on_nil = config.error_on_nil
-  base_colors = M.get_base_colors(r_start, r_end, error_on_nil)
-
-  special_colors = M.get_special_colors(config.special_colors)
-
-  return {
-    base_colors,
-    special_colors,
-  }
-end
-
 return M
