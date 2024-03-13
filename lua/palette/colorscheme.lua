@@ -1,7 +1,10 @@
 local M = {}
 
+local GLOBAL_NAMESPACE_ID = 0
+
 M.get_base_colors = function(r_start, r_end, error_on_nil)
   error_on_nil = error_on_nil or false
+
   local base_colors = {}
 
   for i = r_start, r_end do
@@ -17,24 +20,16 @@ M.get_base_colors = function(r_start, r_end, error_on_nil)
   return base_colors
 end
 
-M.get_colors = function(config)
-  local base_colors = {}
+M.get_special_colors = function(color_defs)
   local special_colors = {}
+  local normal_highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE_ID, {name="Normal"})
 
-  local r_start = config.base_colors.range[1]
-  local r_end = config.base_colors.range[2]
-  local error_on_nil = config.error_on_nil
-  base_colors = M.get_base_colors(r_start, r_end, error_on_nil)
-
-  local GLOBAL_NAMESPACE = 0
-  local normal_highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name="Normal"})
-
-  for key, value in pairs(config.special_colors) do
-    local highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE, {name=value.group, link=false})
+  for key, value in pairs(color_defs) do
+    local highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE_ID, {name=value.group, link=false})
     local color = nil
 
     if highlight[value.attr] then
-      color = string.format("#%6x", highlight[value.attr])
+      color = highlight[value.attr]
 
     elseif highlight["reverse"] then
       local reverse_highlight = {
@@ -42,11 +37,11 @@ M.get_colors = function(config)
         bg = highlight["fg"] or normal_highlight["fg"],
       }
 
-      color = string.format("#%6x", reverse_highlight[value.attr])
+      color = reverse_highlight[value.attr]
 
     elseif next(highlight) == nil then
       local cleared_attr = normal_highlight[value.attr]
-      color = string.format("#%6x", cleared_attr)
+      color = cleared_attr
 
     else
       error(
@@ -59,8 +54,24 @@ M.get_colors = function(config)
       )
     end
 
-    special_colors[key] = color
+    -- 'vim.api.nvim_get_hl(...)' returns the color value as a decimal number,
+    -- so we need to format it to hex first, and then prepend it with "#"
+    special_colors[key] = string.format("#%6x", color)
   end
+
+  return special_colors
+end
+
+M.get_colors = function(config)
+  local base_colors = {}
+  local special_colors = {}
+
+  local r_start = config.base_colors.range[1]
+  local r_end = config.base_colors.range[2]
+  local error_on_nil = config.error_on_nil
+  base_colors = M.get_base_colors(r_start, r_end, error_on_nil)
+
+  special_colors = M.get_special_colors(config.special_colors)
 
   return {
     base_colors,
