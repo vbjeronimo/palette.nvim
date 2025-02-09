@@ -1,0 +1,18 @@
+{
+    "special": {
+        "foreground": "#eeeeee",
+        "background": "#000000",
+        "cursor": "#aaabbc"
+    },
+
+    "terminal": {
+        "color0": "#abcdef",
+        "color1": "#abcdef",
+        "color2": "#abcdef",
+        "color3": "#abcdef",
+        "color4": "#abcdef",
+        "color5": "#abcdef",
+        "color6": "#abcdef",
+        "color7": "#abcdef"
+    }
+}
