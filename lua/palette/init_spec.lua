@@ -25,5 +25,20 @@ describe("Retrieving color values:", function()
         assert.are.equal(result_bg, group_def.bg)
       end
     end)
+
+    it("handles multiple levels of linked highlight groups", function()
+      local highlights = {
+        ["Title"] = { fg = "#89ddff" },
+        ["FloatTitle"] = { link = "Title" },
+        ["FloatFooter"] = { link = "FloatTitle" },
+      }
+
+      for group_name, group_def in pairs(highlights) do
+        vim.api.nvim_set_hl(GLOBAL_NAMESPACE_ID, group_name, group_def)
+      end
+
+      local result_fg = palette.get_special_color("FloatFooter", "fg")
+      assert.are.equal(result_fg, highlights["Title"].fg)
+    end)
   end)
 end)
