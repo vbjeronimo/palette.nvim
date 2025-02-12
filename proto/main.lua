@@ -1,3 +1,44 @@
+-- Some ideas for later:
+function toLua()
+  -- returns a table with the resulting color mappings
+end
+
+function toJSON()
+  -- returns a JSON string
+end
+
+function toStdout()
+  -- print to stdout to allow for stuff like:
+  -- `nvim --headless -c "require('palette').get_colors().toStdout()" | jq ...`
+end
+
+local idea_for_input = {
+  output = {
+    {
+      path = "~/.config/kitty/colors.conf",
+      formatter = "conf"
+    },
+    {
+      path = "~/.config/alacritty/colors.toml",
+      formatter = "toml",
+      mappings = {
+        -- map the definitions at `colors` to something that will be written
+        -- directly to the output file by the formatter
+        ["foreground"] = "colors.special.Normal.fg"
+      }
+    },
+    {
+      path = "~/.config/something-else/colors.custom",
+      formatter = function(color_to_key_mapping) end
+    }
+  },
+  colors = {
+    special = {
+      ["Normal"] = { fg = "#abcdef", bg = "@fedcba" }
+    }
+  }
+}
+
 local input = {
   special = {
     { group = "Normal",     type = "fg", key_name = "foreground" },
