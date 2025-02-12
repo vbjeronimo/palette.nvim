@@ -9,13 +9,13 @@ describe("Retrieving color values:", function()
 
   describe("get_special_color", function()
     it("returns a valid color value when the highlight group is set", function()
-      local test_cases = {
+      local highlights = {
         ["Normal"] = { fg = "#a6accd", bg = "#0f111a" },
         ["Cursor"] = { fg = "#0f111a", bg = "#ffcc00" },
         ["Search"] = { fg = "#0f111a", bg = "#eeffff" },
       }
 
-      for group_name, group_def in pairs(test_cases) do
+      for group_name, group_def in pairs(highlights) do
         vim.api.nvim_set_hl(GLOBAL_NAMESPACE_ID, group_name, group_def)
 
         local result_fg = palette.get_special_color(group_name, "fg")
@@ -39,6 +39,23 @@ describe("Retrieving color values:", function()
 
       local result_fg = palette.get_special_color("FloatFooter", "fg")
       assert.are.equal(result_fg, highlights["Title"].fg)
+    end)
+
+    it("returns the values of the 'Normal' group if a highlight is cleared", function()
+      local highlights = {
+        ["Normal"] = { fg = "#a6accd", bg = "#0f111a" },
+        ["VisualNC"] = {},
+      }
+
+      for group_name, group_def in pairs(highlights) do
+        vim.api.nvim_set_hl(GLOBAL_NAMESPACE_ID, group_name, group_def)
+      end
+
+      local result_fg = palette.get_special_color("VisualNC", "fg")
+      assert.are.equal(result_fg, highlights["Normal"].fg)
+
+      local result_bg = palette.get_special_color("VisualNC", "bg")
+      assert.are.equal(result_bg, highlights["Normal"].bg)
     end)
   end)
 end)
