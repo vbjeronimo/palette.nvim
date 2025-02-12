@@ -32,10 +32,10 @@ function _get_color_decimal_value(group_name, attr_type)
   local highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE_ID, { name = group_name })
 
   local color_decimal
-  if highlight["link"] then
-    color_decimal = _get_color_decimal_value(highlight["link"], attr_type)
-  elseif highlight[attr_type] then
+  if highlight[attr_type] then
     color_decimal = highlight[attr_type]
+  elseif highlight["link"] then
+    color_decimal = _get_color_decimal_value(highlight["link"], attr_type)
   elseif next(highlight) == nil then
     color_decimal = _get_color_decimal_value("Normal", attr_type)
   end
