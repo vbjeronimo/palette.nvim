@@ -24,26 +24,26 @@ M.setup = function(opts)
 end
 
 function get_special_color(group_name, attr_type)
-  local color_decimal = _get_color_decimal_value(group_name, attr_type)
-  return _decimal_to_hex(color_decimal)
+  local color_decimal = get_color_decimal_value(group_name, attr_type)
+  return decimal_to_hex(color_decimal)
 end
 
-function _get_color_decimal_value(group_name, attr_type)
+function get_color_decimal_value(group_name, attr_type)
   local highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE_ID, { name = group_name })
 
   local color_decimal
   if highlight[attr_type] then
     color_decimal = highlight[attr_type]
   elseif highlight["link"] then
-    color_decimal = _get_color_decimal_value(highlight["link"], attr_type)
+    color_decimal = get_color_decimal_value(highlight["link"], attr_type)
   elseif next(highlight) == nil then
-    color_decimal = _get_color_decimal_value("Normal", attr_type)
+    color_decimal = get_color_decimal_value("Normal", attr_type)
   end
 
   return color_decimal
 end
 
-function _decimal_to_hex(value)
+function decimal_to_hex(value)
   return string.lower(string.format("#%06x", value))
 end
 
