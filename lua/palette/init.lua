@@ -36,6 +36,14 @@ function get_color_decimal_value(group_name, attr_type)
     color_decimal = highlight[attr_type]
   elseif highlight["link"] then
     color_decimal = get_color_decimal_value(highlight["link"], attr_type)
+  elseif highlight["reverse"] then
+    local reverse_attr
+    if attr_type == "fg" then
+      reverse_attr = "bg"
+    else
+      reverse_attr = "fg"
+    end
+    color_decimal = highlight[reverse_attr]
   elseif next(highlight) == nil then
     color_decimal = get_color_decimal_value("Normal", attr_type)
   end

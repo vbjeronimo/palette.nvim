@@ -41,6 +41,21 @@ describe("Retrieving color values:", function()
       assert.are.equal(result_fg, highlights["Title"].fg)
     end)
 
+    it("handles reversed highlight groups", function()
+      local highlights = {
+        ["DiffAdd"] = { fg = "#c3e88d", reverse = true },
+        ["DiffDelete"] = { fg = "#f07178", reverse = true },
+        ["DiffText"] = { fg = "#82aaff", reverse = true },
+      }
+
+      for group_name, group_def in pairs(highlights) do
+        vim.api.nvim_set_hl(GLOBAL_NAMESPACE_ID, group_name, group_def)
+
+        local result_bg = palette.get_special_color(group_name, "bg")
+        assert.are.equal(result_bg, group_def.fg)
+      end
+    end)
+
     it("returns the values of the 'Normal' group if a highlight is cleared", function()
       local highlights = {
         ["Normal"] = { fg = "#a6accd", bg = "#0f111a" },
