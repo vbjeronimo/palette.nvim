@@ -23,6 +23,16 @@ M.setup = function(opts)
   config = vim.tbl_deep_extend("force", default_config, opts or {})
 end
 
+function get_terminal_color(color_num)
+  local color_hex = vim.g["terminal_color_" .. color_num]
+
+  if color_hex == nil then
+    error("Error: terminal color " .. color_num .. " is nil")
+  end
+
+  return string.lower(color_hex)
+end
+
 function get_special_color(group_name, attr_type)
   local color_decimal = get_color_decimal_value(group_name, attr_type)
   return decimal_to_hex(color_decimal)
@@ -66,5 +76,6 @@ function decimal_to_hex(value)
 end
 
 M.get_special_color = get_special_color
+M.get_terminal_color = get_terminal_color
 
 return M

@@ -7,6 +7,22 @@ describe("Retrieving color values:", function()
     vim.cmd("highlight clear")
   end)
 
+  describe("get_terminal_color", function()
+    it("returns a valid color value when the terminal color is set", function()
+      local term_colors = {
+        "#282a2e", "#a54242", "#8c9440", "#de935f", "#5f819d", "#85678f", "#5e8d87", "#707880",
+        "#373b41", "#cc6666", "#b5bd68", "#f0c674", "#81a2be", "#b294bb", "#8abeb7", "#c5c8c6"
+      }
+
+      for color_num, color_val in ipairs(term_colors) do
+        vim.g["terminal_color_" .. color_num] = color_val
+
+        local result = palette.get_terminal_color(color_num)
+        assert.are.equal(result, color_val)
+      end
+    end)
+  end)
+
   describe("get_special_color", function()
     it("returns a valid color value when the highlight group is set", function()
       local highlights = {
