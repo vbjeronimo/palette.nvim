@@ -32,9 +32,7 @@ function get_color_decimal_value(group_name, attr_type)
   local highlight = vim.api.nvim_get_hl(GLOBAL_NAMESPACE_ID, { name = group_name })
 
   local color_decimal
-  if highlight[attr_type] then
-    color_decimal = highlight[attr_type]
-  elseif highlight["link"] then
+  if highlight["link"] then
     color_decimal = get_color_decimal_value(highlight["link"], attr_type)
   elseif highlight["reverse"] then
     local reverse_attr
@@ -44,6 +42,8 @@ function get_color_decimal_value(group_name, attr_type)
       reverse_attr = "fg"
     end
     color_decimal = highlight[reverse_attr]
+  elseif highlight[attr_type] then
+    color_decimal = highlight[attr_type]
   elseif next(highlight) == nil then
     -- The highlight group is not defined
     color_decimal = get_color_decimal_value("Normal", attr_type)
