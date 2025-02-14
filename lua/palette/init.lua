@@ -45,7 +45,17 @@ function get_color_decimal_value(group_name, attr_type)
     end
     color_decimal = highlight[reverse_attr]
   elseif next(highlight) == nil then
+    -- The highlight group is not defined
     color_decimal = get_color_decimal_value("Normal", attr_type)
+  end
+
+  if color_decimal == nil then
+    -- The highlight group exists, but the attribute is not defined
+    error(
+      "Error: Could not get color value for attribute '" .. attr_type ..
+      "' on highlight group '" .. group_name .. "', as it is not defined:\n" ..
+      "[\"" .. group_name .. "\"] = " .. vim.inspect(highlight)
+    )
   end
 
   return color_decimal
