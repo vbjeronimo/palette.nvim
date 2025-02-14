@@ -4,12 +4,11 @@ local GLOBAL_NAMESPACE_ID = 0
 
 local default_config = {
   special = {
-    -- ["foreground"] = { group = "Normal", type = "fg-by-default" }
-    { group = "Normal",    type = "fg", key_name = "foreground" },
-    { group = "Normal",    type = "bg", key_name = "background" },
-    { group = "Cursor",    type = "bg", key_name = "cursor" },
-    { group = "CurSearch", type = "fg", key_name = "selection_foreground" },
-    { group = "CurSearch", type = "bg", key_name = "selection_background" },
+    ["foreground"] = { group = "Normal", type = "fg" }
+    ["background"] = { group = "Normal", type = "bg" },
+    ["cursor"] = { group = "Cursor", type = "bg" },
+    ["selection_foreground"] = { group = "CurSearch", type = "fg" },
+    ["selection_background"] = { group = "CurSearch", type = "bg" },
   },
   terminal = {
     key_prefix = "color",
